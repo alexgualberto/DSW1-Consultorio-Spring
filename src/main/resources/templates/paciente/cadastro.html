@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><i class="oi oi-caret-right"></i>
+                        <span th:text="#{paciente.cadastrar.label}"></span></li>
+                </ul>
+                <a class="btn btn-white-text btn-md" th:href="@{/pacientes/listar}"
+                    role="button" style="background-color: #28a745;"> <span class="oi oi-spreadsheet" title="Listar" 
+                    aria-hidden="true"></span> <span th:text="#{paciente.listar.label}"></span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container" id="cadastro">
+
+            <div th:replace="fragments/alert"></div>
+
+            <form th:action="${paciente.CPF == null} ? @{/pacientes/salvar} : @{/pacientes/editar}"
+                th:object="${paciente}" method="POST">
+
+                <div class="form-row">
+                    
+                    <div class="form-group col-md-6">
+						<label th:text="#{paciente.username.label}" for="email"></label> 
+						<input type="email" class="form-control" id="email"
+							th:placeholder="#{paciente.username.label}"
+							autofocus="autofocus" th:field="*{email}"
+                            required/>
+					</div>
+
+                    <div class="form-group col-md-6">
+						<label th:text="#{paciente.password.label}" for="password"></label> 
+						<input type="text" class="form-control" id="password"
+							th:placeholder="#{paciente.password.label}" autofocus="autofocus"
+							th:field="*{password}"
+                            required/>
+					</div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{paciente.name.label}" for="name"></label> 
+                        <input type="text" class="form-control" id="name" th:field="*{name}"
+                            th:placeholder="#{paciente.name.label}" autofocus="autofocus"
+                            required/>
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{paciente.CPF.label}" for="CPF"></label> 
+                        <input type="text" class="form-control" id="CPF" th:field="*{CPF}"
+                            autofocus="autofocus"
+                            th:classappend="${#fields.hasErrors('CPF')} ? is-invalid"
+                            placeholder="000.000.000.00"
+                            required/>
+
+                        <div class="invalid-feedback">
+                            <span th:errors="*{CPF}"></span>
+                        </div>
+                    </div>
+
+				
+                    <div class="form-group col-md-6">
+                        <label th:text="#{paciente.telefone.label}" for="telefone"></label> 
+                        <input type="text" class="form-control" id="telefone" th:field="*{telefone}"
+                            autofocus="autofocus"
+                            th:classappend="${#fields.hasErrors('telefone')} ? is-invalid"
+                            placeholder="(__)_____-____"
+                            required/>
+                        
+                        <div class="invalid-feedback">
+                            <span th:errors="*{telefone}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{paciente.sexo.label}" for="sexo"></label> 
+                        <select class="form-control" id="sexo" th:field="*{sexo}" autofocus="autofocus">
+                            <option th:value="F" th:text="#{paciente.sexo.feminino}" th:selected="${paciente.sexo == 'F'}"></option>
+                            <option th:value="M" th:text="#{paciente.sexo.masculino}" th:selected="${paciente.sexo == 'M'}"></option>
+                        </select>
+                    </div>
+          
+                    <div class="form-group col-md-6">
+                        <label th:text="#{paciente.data_nascimento.label}" for="data_nascimento"></label>
+                        <input type="date" class="form-control" id="data_nascimento" th:field="*{stringData_Nascimento}" autofocus="autofocus"
+                            th:max="${T(java.time.LocalDate).now()}" required/>
+                    </div>
+        
+					<div class="form-group col-md-12">
+						<button type="submit" th:text="#{button.salvar.label}" style="background-color: #28a745;"
+							class="btn btn-white-text"></button>
+					</div>
+                </div>
+
+                <input type="hidden" id="id" th:field="*{id}" />
+            </form>
+        </div>
+    </section>
+</body>
+</html>

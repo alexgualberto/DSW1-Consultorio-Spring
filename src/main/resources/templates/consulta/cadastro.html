@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{consulta.listar.label}"></span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <form method="post" th:action="@{/consultas/listarHorarios}">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label for="data_consulta" class="col-form-label font-weight-bold display-4" th:text="#{consulta.consultar.label}"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="data_consulta" name="data_consulta" autofocus="autofocus" th:min="${T(java.time.LocalDate).now()}" required/>
+                        <label for="id_medico" class="col-form-label font-weight-bold display-4" th:text="#{inicial.message.data}"></label>
+                        <input type="hidden" class="form-control" id="id_medico" name="id_medico" th:value="${id_medico}" autofocus="autofocus" readonly="true"/>                                           
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" th:value="#{button.filtrar.label}" class="btn btn-success btn-block">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="container mt-4">
+            <form action="#" method="post" th:action="@{/consultas/salvar}">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label for="horario" class="col-form-label font-weight-bold display-4" th:text="#{consulta.horario.label}"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <th:block th:if="${not #lists.isEmpty(horarios)}">
+                            <select name="horario" id="horario" class="form-control">
+                                <option th:each="horario : ${horarios}" th:value="${horario}" th:text="${horario}"></option>
+                            </select>
+                        </th:block>
+                        <th:block th:unless="${not #lists.isEmpty(horarios)}">
+                            <p class="text-danger" th:text="#{no.available.times}">No available times</p>
+                        </th:block>
+                        <label for="id_medico"></label>
+                        <input type="hidden" id="id_medico" name="id_medico" th:value="${id_medico}" autofocus="autofocus" readonly="true"/>
+                        <label for="data_consulta"></label>
+                        <input type="hidden" id="data_consulta" name="data_consulta" th:value="${data_consulta}" autofocus="autofocus" readonly="true"/>
+                        
+                    </div>
+                    <div class="col-sm-2" th:if="${not #lists.isEmpty(horarios)}">
+                        <input type="submit" th:value="#{button.agendar.label}" class="btn btn-success btn-block">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div th:replace="fragments/modal :: modal"></div>
+    </section>
+</body>
+</html>
