@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><i class="oi oi-caret-right"></i>
+                        <span th:text="#{medico.cadastrar.label}"></span></li>
+                </ul>
+                <a class="btn btn-white-text btn-md" th:href="@{/medicos/listar}"
+                    role="button" style="background-color: #28a745;"> <span class="oi oi-spreadsheet" title="Listar" 
+                    aria-hidden="true"></span> <span th:text="#{medico.listar.label}"></span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container" id="cadastro">
+
+            <div th:replace="fragments/alert"></div>
+
+            <form th:action="${medico.CRM == null} ? @{/medicos/salvar} : @{/medicos/editar}"
+                th:object="${medico}" method="POST">
+
+                <div class="form-row">
+                    
+                    <div class="form-group col-md-6">
+						<label th:text="#{medico.username.label}" for="email"></label> 
+						<input type="email" class="form-control" id="email"
+							th:placeholder="#{medico.username.label}"
+							autofocus="autofocus" th:field="*{email}"
+                            th:classappend="${#fields.hasErrors('email')} ? is-invalid"
+                            required/>
+                        
+                        <div class="invalid-feedback">
+                            <span th:errors="*{email}"></span>
+                        </div>
+					</div>
+
+                    <div class="form-group col-md-6">
+						<label th:text="#{medico.password.label}" for="password"></label> 
+						<input type="text" class="form-control" id="password"
+							th:placeholder="#{medico.password.label}" autofocus="autofocus"
+							th:field="*{password}"
+                            required/>
+					</div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{medico.name.label}" for="name"></label> 
+                        <input type="text" class="form-control" id="name" th:field="*{name}"
+                            th:placeholder="#{medico.name.label}" autofocus="autofocus"
+                            required/>
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{medico.CRM.label}" for="CRM"></label> 
+                        <input type="text" class="form-control" id="CRM" th:field="*{CRM}"
+                            autofocus="autofocus" placeholder="UF/______"
+                            th:classappend="${#fields.hasErrors('CRM')} ? is-invalid"
+                            required/>
+
+                        <div class="invalid-feedback">
+                            <span th:errors="*{CRM}"></span>
+                        </div>
+                    </div>
+
+				
+                    <div class="form-group col-md-6">
+                        <label th:text="#{medico.especialidade.label}" for="especialidade"></label> 
+                        <input type="text" class="form-control" id="especialidade" th:field="*{especialidade}"
+                            autofocus="autofocus"
+                            required/>
+                    </div>
+
+					<div class="form-group col-md-12">
+						<button type="submit" th:text="#{button.salvar.label}" style="background-color: #28a745;"
+							class="btn btn-white-text"></button>
+					</div>
+                </div>
+
+                <input type="hidden" id="id" th:field="*{id}" />
+            </form>
+        </div>
+    </section>
+</body>
+</html>
+
